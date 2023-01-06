@@ -1,12 +1,12 @@
 import logging
-import os
-import sys
 import time
 from builtins import Exception
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.webdriver import WebDriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class SeleniumManager:
@@ -29,20 +29,9 @@ class SeleniumManager:
             # setup chrome driver
             chrome_options = Options()
             chrome_options.add_experimental_option("debuggerAddress", f'127.0.0.1:{self.__port}')
-            if sys.platform == 'darwin':
-                username = os.environ.get('USER', None)
-                chrome_driver_path = f'/Users/{username}/Applications/ChromeDrive/chromedriver'
-            elif sys.platform == 'linux':
-                chrome_driver_path = "/snap/bin/chromium.chromedriver"
-            else:
-                logging.error('Platform not supported')
-                sys.exit(1)
 
-            if os.path.isfile(chrome_driver_path):
-                self.__chrome_driver = webdriver.Chrome(chrome_driver_path, chrome_options=chrome_options)
-            else:
-                logging.error('chromedriver not found')
-                sys.exit(1)
+            self.__chrome_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
+                                                    options=chrome_options)
 
         return self.__chrome_driver
 

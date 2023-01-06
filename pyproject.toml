@@ -10,6 +10,7 @@ packages = [{include = "cataloger_cli"}]
 python = "^3.10"
 fire = "^0.5.0"
 selenium = "^4.7.2"
+webdriver-manager = "^3.8.5"
 
 
 [tool.poetry.group.dev.dependencies]
