@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cataloger-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
@@ -9,6 +9,8 @@ packages = [{include = "cataloger_cli"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 fire = "^0.5.0"
+selenium = "^4.7.2"
+webdriver-manager = "^3.8.5"
 
 
 [tool.poetry.group.dev.dependencies]
