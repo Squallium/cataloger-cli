@@ -61,6 +61,12 @@ class ApiResponse:
             model_class=model_class
         )
 
+    def body_json(self):
+        result = {}
+        if self._body is not None and self.content_type and self.is_json and self.is_ok:
+            result = self._body.json()
+        return result
+
 
 class BaseModel:
     """

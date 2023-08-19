@@ -3,9 +3,10 @@ import time
 from builtins import Exception
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -26,8 +27,7 @@ class SeleniumManager:
     @property
     def chrome_driver(self) -> WebDriver:
         if not self.__chrome_driver:
-            # setup chrome driver
-            chrome_options = Options()
+            chrome_options = ChromeOptions()
             chrome_options.add_experimental_option("debuggerAddress", f'127.0.0.1:{self.__port}')
 
             self.__chrome_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
@@ -37,7 +37,15 @@ class SeleniumManager:
 
     @property
     def firefox_driver(self) -> WebDriver:
-        raise NotImplementedError
+        if not self.__firefox_driver:
+            firefox_options = FirefoxOptions()
+            firefox_options.add_argument(f'--remote-debugging-port={self.__port}')
+            firefox_options.add_argument('--marionette-port 50550')
+            firefox_options.add_argument('--connect-existing')
+
+            self.__firefox_driver = webdriver.Firefox(options=firefox_options)
+
+        return self.__firefox_driver
 
     @property
     def driver(self) -> WebDriver:
