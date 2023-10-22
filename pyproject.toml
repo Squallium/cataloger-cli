@@ -9,16 +9,16 @@ packages = [{include = "cataloger_cli"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 fire = "^0.5.0"
-selenium = "^4.11.2"
-webdriver-manager = "^4.0.0"
-pillow = "^10.0.0"
-rich = "^13.5.2"
+selenium = "^4.14.0"
+webdriver-manager = "^4.0.1"
+pillow = "^10.1.0"
+rich = "^13.6.0"
 ffmpeg-python = "^0.2.0"
 requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
+pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
 
 [build-system]
