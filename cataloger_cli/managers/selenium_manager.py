@@ -58,10 +58,7 @@ class SeleniumManager:
 
     def load_web(self, web_url, seconds=0, reload=False):
         if not self.__web_loaded or self.__web_loaded != web_url or reload:
-            if self.__web_loaded != web_url:
-                self.driver.get(web_url)
-            else:
-                self.driver.refresh()
+            self.driver.get(web_url)
 
             if seconds > 0:
                 logging.info(f'Waiting {seconds} loading seconds')
