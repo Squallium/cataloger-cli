@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -23,7 +24,7 @@ class SeleniumManager:
         self.__firefox_driver: webdriver = None
         self.__web_loaded = None
 
-    def chrome_driver(self) -> webdriver:
+    def chrome_driver(self) -> WebDriver:
         if not self.__chrome_driver:
             chrome_options = ChromeOptions()
             chrome_options.add_experimental_option("debuggerAddress", f'127.0.0.1:{self.__port}')
@@ -47,7 +48,7 @@ class SeleniumManager:
         return self.__firefox_driver
 
     @property
-    def driver(self) -> webdriver:
+    def driver(self) -> WebDriver:
         if self.__driver == 'chrome':
             return self.chrome_driver()
         elif self.__driver == 'firefox':
@@ -57,7 +58,11 @@ class SeleniumManager:
 
     def load_web(self, web_url, seconds=0, reload=False):
         if not self.__web_loaded or self.__web_loaded != web_url or reload:
-            self.driver.get(web_url)
+            if self.__web_loaded != web_url:
+                self.driver.get(web_url)
+            else:
+                self.driver.refresh()
+
             if seconds > 0:
                 logging.info(f'Waiting {seconds} loading seconds')
                 time.sleep(seconds)
@@ -65,12 +70,12 @@ class SeleniumManager:
 
     def scroll_to_the_end(self, loop=True, sleep_time=1):
         script = 'window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;'
-        len_of_page = self.chrome_driver.execute_script(script)
+        len_of_page = self.driver.execute_script(script)
         match = False
         while not match:
             last_count = len_of_page
             time.sleep(sleep_time)
-            len_of_page = self.chrome_driver.execute_script(script)
+            len_of_page = self.driver.execute_script(script)
             if last_count == len_of_page or loop:
                 match = True
 
